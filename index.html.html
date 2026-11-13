@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Mejor Suerte en Viernes 13</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        hand: ['"Caveat"', 'cursive'],
+                    },
+                    colors: {
+                        blush: {
+                            50: '#fff8f9',
+                            100: '#ffe4e9',
+                            200: '#ffccd6',
+                            300: '#ffa3b6',
+                            400: '#ff708e',
+                            500: '#f43f66',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#4c0519',
+                        },
+                        wine: {
+                            700: '#7f1d3a',
+                            800: '#63152c',
+                            900: '#450a1c',
+                        },
+                        cream: {
+                            50: '#fffdfa',
+                            100: '#fdf6ec',
+                            200: '#faebd7',
+                        },
+                        gold: {
+                            300: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#d97706',
+                            600: '#b45309',
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-cream-50 via-blush-100/80 to-cream-200 text-wine-900 font-sans antialiased selection:bg-blush-200 selection:text-wine-900 relative overflow-x-hidden">
+
+    <canvas id="hearts-canvas" class="fixed inset-0 pointer-events-none z-10"></canvas>
+
+    <audio id="bgMusic" src="viernes_13.mp3" loop preload="auto"></audio>
+
+    <button id="music-toggle-btn" type="button" class="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg border border-blush-200/90 text-wine-900 hover:scale-105 active:scale-95 transition-all" aria-label="Pausar o reproducir música">
+        <span class="w-8 h-8 rounded-full bg-gradient-to-tr from-wine-700 to-blush-500 text-white flex items-center justify-center shadow-sm">
+            <svg id="icon-play" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </span>
+        <span id="music-label" class="text-xs font-semibold pr-1">Música</span>
+    </button>
+
+    <div class="fixed top-10 left-8 text-gold-400/40 pointer-events-none animate-float-slow hidden md:block">
+        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>
+    </div>
+    <div class="fixed bottom-24 left-10 text-blush-300/40 pointer-events-none animate-float-slow hidden md:block" style="animation-delay: 2s;">
+        <svg class="w-14 h-14" fill="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </div>
+
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <header class="relative z-20 pt-8 pb-2 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex justify-center">
+        <div class="inline-flex items-center gap-2.5 bg-cream-50/90 backdrop-blur-md px-5 py-2 rounded-full shadow-sm border border-blush-200/80">
+            <span class="flex h-2.5 w-2.5 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blush-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-wine-700"></span>
+            </span>
+            <span class="text-xs sm:text-sm font-semibold tracking-wider uppercase text-wine-800">Viernes 13 • La Mejor Suerte de Mi Vida</span>
+            <svg class="w-4 h-4 text-gold-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>
+        </div>
+    </header>
+
+    <main class="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-24 space-y-16">
+
+        <section class="text-center max-w-3xl mx-auto space-y-5 pt-2">
+            <div class="inline-flex items-center justify-center gap-3 text-gold-500 mb-1">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <span class="text-xs uppercase tracking-[0.25em] font-semibold text-wine-700">13 • 11 • 2026</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>
+            </div>
+
+            <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-wine-900 leading-[1.1] tracking-tight">
+                Dicen que el Viernes 13 es de mala suerte...
+                <span class="block italic font-medium text-blush-600 mt-2">pero yo te tengo a ti.</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-wine-800/80 max-w-2xl mx-auto leading-relaxed font-normal">
+                Entre todas las fechas del calendario y todas las estrellas del cielo, coincidir contigo sigue siendo el golpe de suerte más bonito de mi vida.
+            </p>
+        </section>
+
+        <section class="space-y-8">
+            <div class="border-b border-blush-200/80 pb-4">
+                <span class="text-xs font-semibold uppercase tracking-widest text-gold-600">Nuestros Recuerdos</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-wine-900">Momentos que son mi amuleto</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 sm:gap-8 pt-2">
+                
+                <div class="group relative bg-cream-50 p-3.5 pb-6 rounded-2xl shadow-lg hover:shadow-2xl border border-blush-100 transition-all duration-300 hover:-translate-y-2 -rotate-1 hover:rotate-0">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-blush-200/80 backdrop-blur-sm rounded-sm rotate-1 shadow-xs z-10 flex items-center justify-center">
+                        <span class="text-[10px] text-wine-800 font-semibold tracking-widest">★ 13 ★</span>
+                    </div>
+                    
+                    <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-blush-100">
+                        <img src="foto1.jpeg" alt="Nosotros 1" onerror="this.src='https://placehold.co/600x750/ffe4e9/7f1d3a?text=Foto+1'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+
+                    <div class="mt-4 text-center px-1">
+                        <p class="font-hand text-2xl text-wine-900 font-semibold">Mi lugar favorito es contigo</p>
+                        <p class="text-xs text-blush-600 mt-1 font-medium">Viernes 13 • Para siempre</p>
+                    </div>
+                </div>
+
+                <div class="group relative bg-cream-50 p-3.5 pb-6 rounded-2xl shadow-lg hover:shadow-2xl border border-blush-100 transition-all duration-300 hover:-translate-y-2 rotate-1 hover:rotate-0">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-gold-300/70 backdrop-blur-sm rounded-sm -rotate-2 shadow-xs z-10 flex items-center justify-center">
+                        <span class="text-[10px] text-gold-600 font-semibold tracking-widest">♥ SUERTE ♥</span>
+                    </div>
+                    
+                    <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-blush-100">
+                        <img src="foto2.jpeg" alt="Nosotros 2" onerror="this.src='https://placehold.co/600x750/ffe4e9/7f1d3a?text=Foto+2'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+
+                    <div class="mt-4 text-center px-1">
+                        <p class="font-hand text-2xl text-wine-900 font-semibold">Tú eres mi mejor amuleto</p>
+                        <p class="text-xs text-blush-600 mt-1 font-medium">Nuestro momento favorito</p>
+                    </div>
+                </div>
+
+                <div class="group relative bg-cream-50 p-3.5 pb-6 rounded-2xl shadow-lg hover:shadow-2xl border border-blush-100 transition-all duration-300 hover:-translate-y-2 -rotate-1 hover:rotate-0">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-blush-200/80 backdrop-blur-sm rounded-sm rotate-2 shadow-xs z-10 flex items-center justify-center">
+                        <span class="text-[10px] text-wine-800 font-semibold tracking-widest">✦ MAGIA ✦</span>
+                    </div>
+                    
+                    <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-blush-100">
+                        <img src="foto3.jpeg" alt="Nosotros 3" onerror="this.src='https://placehold.co/600x750/ffe4e9/7f1d3a?text=Foto+3'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+
+                    <div class="mt-4 text-center px-1">
+                        <p class="font-hand text-2xl text-wine-900 font-semibold">A tu lado todo brilla más</p>
+                        <p class="text-xs text-blush-600 mt-1 font-medium">Risas infinitas</p>
+                    </div>
+                </div>
+
+                <div class="group relative bg-cream-50 p-3.5 pb-6 rounded-2xl shadow-lg hover:shadow-2xl border border-blush-100 transition-all duration-300 hover:-translate-y-2 rotate-1 hover:rotate-0">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-gold-300/70 backdrop-blur-sm rounded-sm -rotate-1 shadow-xs z-10 flex items-center justify-center">
+                        <span class="text-[10px] text-gold-600 font-semibold tracking-widest">☾ TÚ Y YO ☽</span>
+                    </div>
+                    
+                    <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-blush-100">
+                        <img src="foto4.jpeg" alt="Nosotros 4" onerror="this.src='https://placehold.co/600x750/ffe4e9/7f1d3a?text=Foto+4'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </div>
+
+                    <div class="mt-4 text-center px-1">
+                        <p class="font-hand text-2xl text-wine-900 font-semibold">Nuestro próximo capítulo</p>
+                        <p class="text-xs text-blush-600 mt-1 font-medium">Te amo muchísimo</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="max-w-3xl mx-auto space-y-6">
+            <div class="text-center space-y-1">
+                <span class="text-xs font-semibold uppercase tracking-widest text-gold-600">Un Instante Especial</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-wine-900">Nuestro recuerdo en movimiento</h2>
+            </div>
+
+            <div class="relative bg-cream-50 p-4 sm:p-5 rounded-3xl shadow-xl border border-blush-200/80">
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-wine-700 to-blush-600 text-cream-50 rounded-full shadow-sm text-[11px] font-semibold tracking-widest uppercase">
+                    ✦ Nuestro Video ✦
+                </div>
+                <div class="rounded-2xl overflow-hidden bg-wine-900/5 border border-blush-100 mt-2">
+                    <video id="couple-video" src="video1.mp4" controls playsinline preload="metadata" class="w-full max-h-[520px] object-contain mx-auto block rounded-2xl bg-black/90"></video>
+                </div>
+                <p class="font-hand text-2xl text-center text-wine-900 font-semibold mt-4">Cada segundo contigo vale oro ♥</p>
+            </div>
+        </section>
+
+        <section class="relative max-w-3xl mx-auto">
+            <div class="absolute -inset-2 bg-gradient-to-r from-blush-300 via-gold-300 to-wine-700/30 rounded-[2rem] blur-md opacity-45"></div>
+            
+            <div class="relative bg-cream-50/95 backdrop-blur-xl rounded-[1.75rem] p-7 sm:p-12 shadow-xl border border-blush-200/90">
+                <div class="flex items-center justify-between border-b border-blush-100 pb-5 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-full bg-blush-100 text-wine-700 flex items-center justify-center font-serif font-bold text-lg border border-blush-200">
+                            13
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-wine-900">Mi mejor suerte en Viernes 13</h3>
+                            <p class="text-xs text-blush-600">Para la dueña de mi corazón</p>
+                        </div>
+                    </div>
+                    <span class="text-gold-500 text-2xl select-none">✦</span>
+                </div>
+
+                <div class="space-y-4 font-serif text-xl sm:text-2xl text-wine-900/90 leading-relaxed p-2">
+                    <p>Monkeysiña,</p>
+                    <p>
+                        El mundo entero suele pensar que hoy es un día de supersticiones y mala fortuna, pero cada vez que te miro me doy cuenta de que a mí me tocó toda la suerte del universo.
+                    </p>
+                    <p>
+                        Gracias por iluminar mis días, por ser mi refugio, mi alegría y la persona con la que quiero compartir todos mis viernes 13 y el resto de mis días. No necesito tréboles de cuatro hojas ni estrellas fugaces mientras pueda tomar tu mano.
+                    </p>
+                </div>
+
+                <div class="mt-8 pt-5 border-t border-blush-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <p class="text-xs uppercase tracking-widest text-blush-500 font-semibold">Con todo mi amor,</p>
+                        <p class="font-hand text-3xl text-wine-800 font-bold mt-0.5">Tu persona favorita ♥</p>
+                    </div>
+
+                    <button id="burst-hearts-btn" type="button" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-wine-700 to-blush-600 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all">
+                        <span>Enviar lluvia de amor</span>
+                        <span>💖</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="relative z-20 text-center pb-8 px-4 text-xs text-wine-700/75">
+        <p>Hecho con todo mi cariño • Viernes 13 de pura buena suerte contigo ✦</p>
+    </footer>
+
+    <script>
+        (function () {
+            function showToast(message) {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'bg-cream-50/95 backdrop-blur-md text-wine-900 border border-blush-200 px-4 py-2.5 rounded-2xl shadow-lg text-xs sm:text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0';
+                toast.innerHTML = `<span class="text-blush-500">♥</span><span>${message}</span>`;
+                container.appendChild(toast);
+
+                requestAnimationFrame(() => {
+                    toast.classList.remove('translate-y-2', 'opacity-0');
+                });
+
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', '-translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3200);
+            }
+
+            const canvas = document.getElementById('hearts-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = (canvas.width = window.innerWidth);
+            let height = (canvas.height = window.innerHeight);
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const heartColors = [
+                'rgba(244, 63, 102, 0.55)',
+                'rgba(127, 29, 58, 0.45)',
+                'rgba(255, 112, 142, 0.55)',
+                'rgba(255, 163, 182, 0.65)',
+                'rgba(217, 119, 6, 0.42)'
+            ];
+
+            class HeartParticle {
+                constructor(startFromTop = true, customX = null, customY = null) {
+                    this.reset(startFromTop, customX, customY);
+                }
+
+                reset(startFromTop = true, customX = null, customY = null) {
+                    this.x = customX !== null ? customX : Math.random() * width;
+                    this.y = customY !== null ? customY : (startFromTop ? -20 - Math.random() * height : Math.random() * height);
+                    this.size = 8 + Math.random() * 14;
+                    this.speedY = 0.7 + Math.random() * 1.4;
+                    this.swayAmplitude = 0.4 + Math.random() * 1.1;
+                    this.swayFrequency = 0.01 + Math.random() * 0.02;
+                    this.phase = Math.random() * Math.PI * 2;
+                    this.rotation = (Math.random() - 0.5) * 0.6;
+                    this.rotationSpeed = (Math.random() - 0.5) * 0.015;
+                    this.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+                    this.isSparkle = Math.random() < 0.14;
+                }
+
+                update() {
+                    this.y += this.speedY;
+                    this.phase += this.swayFrequency;
+                    this.x += Math.sin(this.phase) * this.swayAmplitude;
+                    this.rotation += this.rotationSpeed;
+
+                    if (this.y > height + 30) {
+                        this.reset(true);
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation);
+                    ctx.fillStyle = this.color;
+
+                    if (this.isSparkle) {
+                        const s = this.size * 0.55;
+                        ctx.beginPath();
+                        ctx.moveTo(0, -s);
+                        ctx.quadraticCurveTo(0, 0, s, 0);
+                        ctx.quadraticCurveTo(0, 0, 0, s);
+                        ctx.quadraticCurveTo(0, 0, -s, 0);
+                        ctx.quadraticCurveTo(0, 0, 0, -s);
+                        ctx.fill();
+                    } else {
+                        const s = this.size * 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(0, s * 0.35);
+                        ctx.bezierCurveTo(0, -s * 0.3, -s, -s * 0.3, -s, s * 0.35);
+                        ctx.bezierCurveTo(-s, s * 0.95, 0, s * 1.35, 0, s * 1.65);
+                        ctx.bezierCurveTo(0, s * 1.35, s, s * 0.95, s, s * 0.35);
+                        ctx.bezierCurveTo(s, -s * 0.3, 0, -s * 0.3, 0, s * 0.35);
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            const particles = [];
+            const baseCount = Math.min(48, Math.max(24, Math.floor(width / 28)));
+            for (let i = 0; i < baseCount; i++) {
+                particles.push(new HeartParticle(false));
+            }
+
+            function animateHearts() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(animateHearts);
+            }
+            animateHearts();
+
+            document.getElementById('burst-hearts-btn').addEventListener('click', () => {
+                for (let i = 0; i < 24; i++) {
+                    const p = new HeartParticle(true, width * 0.2 + Math.random() * width * 0.6, -10 - Math.random() * 120);
+                    p.speedY = 1.6 + Math.random() * 2.2;
+                    p.size = 12 + Math.random() * 16;
+                    particles.push(p);
+                }
+                if (particles.length > 110) {
+                    particles.splice(0, particles.length - 110);
+                }
+                showToast('¡Lluvia de amor enviada!');
+            });
+
+            const bgMusic = document.getElementById('bgMusic');
+            const musicToggleBtn = document.getElementById('music-toggle-btn');
+            const iconPlay = document.getElementById('icon-play');
+            const iconPause = document.getElementById('icon-pause');
+            const musicLabel = document.getElementById('music-label');
+            const coupleVideo = document.getElementById('couple-video');
+
+            let isPlaying = false;
+            let userPausedManually = false;
+
+            function updateMusicUI(playing) {
+                isPlaying = playing;
+                if (playing) {
+                    iconPlay.classList.add('hidden');
+                    iconPause.classList.remove('hidden');
+                    musicLabel.textContent = 'Pausar';
+                } else {
+                    iconPlay.classList.remove('hidden');
+                    iconPause.classList.add('hidden');
+                    musicLabel.textContent = 'Música';
+                }
+            }
+
+            function tryStartMusic() {
+                if (isPlaying || userPausedManually) return;
+                bgMusic.play().then(() => {
+                    updateMusicUI(true);
+                }).catch(() => {});
+            }
+
+            window.addEventListener('load', tryStartMusic);
+            document.addEventListener('click', function handleFirstInteraction(e) {
+                if (e.target.closest('#music-toggle-btn') || e.target.closest('#couple-video')) return;
+                tryStartMusic();
+            }, { once: true });
+
+            musicToggleBtn.addEventListener('click', () => {
+                if (!isPlaying) {
+                    userPausedManually = false;
+                    bgMusic.play().then(() => {
+                        updateMusicUI(true);
+                    }).catch(() => {
+                        showToast('Verifica que viernes_13.mp3 esté en la misma carpeta');
+                    });
+                } else {
+                    userPausedManually = true;
+                    bgMusic.pause();
+                    updateMusicUI(false);
+                }
+            });
+
+            coupleVideo.addEventListener('play', () => {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    updateMusicUI(false);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
